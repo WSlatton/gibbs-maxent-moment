@@ -39,7 +39,7 @@ The choice of moments to use and their coefficients are provided to stdin in a f
 -0.7
 0.3
 ```
-with one moment per line, a blank line, and then one coefficient per line in the same order. This example corresponds to using the moments
+with one moment per line, a blank line, and then one coefficient per line in the same order. **Note that the indices for each moment must be listed in increasing order**. This example corresponds to using the moments
 
 ![](https://raw.githubusercontent.com/WSlatton/gibbs-maxent-moment/main/readme_images/fig6.png)
 
@@ -47,7 +47,11 @@ with corresponding coefficients
 
 ![](https://raw.githubusercontent.com/WSlatton/gibbs-maxent-moment/main/readme_images/fig7.png)
 
-The samples are given one per line on stdout by listing the indices with value one. For example, the binary pattern (0, 1, 1, 0, 0, 0, 1) with N = 7 would be output as the line
+The samples are given one per line on stdout by listing the indices with value one. For example, the binary pattern
+```
+(0, 1, 1, 0, 0, 0, 1)
+```
+with N = 7 would be output as the line
 ```
 1, 2, 6
 ```
