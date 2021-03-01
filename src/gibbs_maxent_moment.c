@@ -28,7 +28,7 @@ void compute_moment_slices(distribution *dist) {
         int Pi = 0;
 
         for (int j = 0; j < P; j++) {
-            if (j != i && contains(dist->moments + j * K, K, i)) {
+            if (contains(dist->moments + j * K, K, i)) {
                 Pi++;
             }
         }
@@ -38,7 +38,7 @@ void compute_moment_slices(distribution *dist) {
 
         int k = 0;
         for (int j = 0; j < P; j++) {
-            if (j != i && contains(dist->moments + j * K, K, i)) {
+            if (contains(dist->moments + j * K, K, i)) {
                 dist->moment_slices[i][k++] = j;
             }
         }
@@ -63,13 +63,13 @@ double rand_double() {
     return (double) r53 / 2251799813685247.0;
 }
 
-bool subset(int *list, size_t n, BV *bv) {
+bool subset(int *list, size_t n, BV *bv, int ignore) {
     for (int i = 0; i < n; i++) {
         if (list[i] == -1) {
             return true;
         }
 
-        if (bv_get(bv, list[i]) == 0) {
+        if (bv_get(bv, list[i]) == 0 && list[i] != ignore) {
             return false;
         }
     }
@@ -90,7 +90,7 @@ void step(distribution *dist, BV *state) {
             size_t moment_index = dist->moment_slices[i][j];
             int *moment = dist->moments + moment_index * K;
 
-            if (subset(moment, K, state)) {
+            if (subset(moment, K, state, i)) {
                 double c = dist->coefficients[moment_index];
                 log_ratio += c;
             }

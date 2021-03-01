@@ -109,6 +109,26 @@ int main(int argc, char **argv) {
         sparse_arr_free(samples[s]);
     }
 
+    /*printf("moments:\n");
+    for (int i = 0; i < P; i++) {
+        for (int j = 0; j < K; j++) {
+            printf("%d ", moments[i * K + j]);
+        }
+        printf("\n");
+    }
+
+    for (int i = 0; i < N; i++) {
+        printf("slices for i = %d:\n", i);
+        int Pi = dist.moment_slices_sizes[i];
+        int *slice = dist.moment_slices[i];
+
+        for (int j = 0; j < Pi; j++) {
+            printf("%zu ", slice[j]);
+        }
+
+        printf("\n");
+    }*/
+
     free(moments);
 
     for (int i = 0; i < N; i++) {
