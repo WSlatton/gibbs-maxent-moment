@@ -18,8 +18,4 @@ bool bv_get(BV *bv, size_t i);
 
 void bv_free(BV *bv);
 
-BV *bv_copy(BV *bv);
-
-char *bv_to_str(BV *bv);
-
 #endif //GIBBS_MAXENT_MOMENT_BV_H

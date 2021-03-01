@@ -14,7 +14,7 @@ int *parse_moments(size_t *P, size_t* K) {
     *K = 0;
 
     while ((n = getline(&line, &size, stdin)) > 1) {
-        char *line_copy = (char *) malloc(sizeof(char) * n);
+        char *line_copy = (char *) malloc(sizeof(char) * (n + 1));
         strcpy(line_copy, line);
         ll_insert(lines, line_copy);
         (*P)++;
@@ -31,6 +31,8 @@ int *parse_moments(size_t *P, size_t* K) {
             *K = K_line;
         }
     }
+
+    free(line);
 
     int *moments = (int *) malloc(sizeof(int) * (*P) * (*K));
 
@@ -52,7 +54,11 @@ int *parse_moments(size_t *P, size_t* K) {
         for (; k < *K; k++) {
             moments[j * (*K) + k] = -1;
         }
+
+        free(line);
     }
+
+    free(lines);
 
     return moments;
 }
@@ -100,5 +106,17 @@ int main(int argc, char **argv) {
         }
 
         printf("%i\n", samples[s]->array[l - 1]);
+        sparse_arr_free(samples[s]);
     }
+
+    free(moments);
+
+    for (int i = 0; i < N; i++) {
+        free(dist.moment_slices[i]);
+    }
+
+    free(dist.moment_slices);
+    free(dist.moment_slices_sizes);
+    free(coefficients);
+    free(samples);
 }

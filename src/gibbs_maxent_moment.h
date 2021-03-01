@@ -3,6 +3,7 @@
 
 #include "bv.h"
 #include <stddef.h>
+#include <stdlib.h>
 
 typedef struct {
     size_t N;
@@ -20,5 +21,7 @@ typedef struct {
 } sparse_arr;
 
 sparse_arr **sample(distribution *dist, size_t number_of_samples, size_t sample_interval, size_t burn_in);
+
+void sparse_arr_free(sparse_arr *sa);
 
 #endif //GIBBS_MAXENT_MOMENT_GIBBS_MAXENT_MOMENT_H

@@ -3,7 +3,6 @@
 #include "sys/time.h"
 #include <stdlib.h>
 #include <math.h>
-#include <stdio.h>
 
 bool contains(int *sorted_list, size_t n, size_t x) {
     for (int i = 0; i < n; i++) {
@@ -138,7 +137,6 @@ sparse_arr *bv_to_sparse(BV *bv) {
     return sa;
 }
 
-//sparse_arr **sample(distribution *dist, size_t number_of_samples, size_t sample_interval, size_t burn_in) {
 sparse_arr **sample(distribution *dist, size_t number_of_samples, size_t sample_interval, size_t burn_in) {
     size_t N = dist->N;
     seed_rand();
@@ -158,4 +156,9 @@ sparse_arr **sample(distribution *dist, size_t number_of_samples, size_t sample_
     bv_free(state);
 
     return samples;
+}
+
+void sparse_arr_free(sparse_arr *sa) {
+    free(sa->array);
+    free(sa);
 }

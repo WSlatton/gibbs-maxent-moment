@@ -18,6 +18,4 @@ void ll_insert(LL *ll, char *x);
 
 char *ll_next(LL *ll);
 
-void ll_free(LL *ll);
-
 #endif //GIBBS_MAXENT_MOMENT_LL_H

@@ -27,16 +27,8 @@ void ll_insert(LL *ll, char *elem) {
 
 char *ll_next(LL *ll) {
     char *elem = ll->root->elem;
+    struct node *old_root = ll->root;
     ll->root = ll->root->next;
+    free(old_root);
     return elem;
-}
-
-void ll_free(LL *ll) {
-    if (ll->root == NULL) {
-        return;
-    }
-
-    free(ll->root->elem);
-    ll->root = ll->root->next;
-    ll_free(ll);
 }
