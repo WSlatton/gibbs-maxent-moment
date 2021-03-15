@@ -90,6 +90,11 @@ void verify_dist(distribution *dist) {
     bool hit_end = false;
     for (int j = 0; j < dist->K; j++) {
       int index = dist->moments[i * dist->K + j];
+
+      if (index < -2 || index >= (int) dist->N) {
+        fprintf(stderr, "Invalid index %i when N = %i\n", index, dist->N);
+        exit(1);
+      }
       
       if (index == -1) {
         hit_end = true;
