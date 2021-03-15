@@ -12,8 +12,18 @@ int *parse_moments(size_t *P, size_t* K) {
     *P = 0;
     size_t n;
     *K = 0;
+    char *separator = "%%\n";
 
-    while ((n = getline(&line, &size, stdin)) > 1) {
+    while (1) {
+        size_t n = getline(&line, &size, stdin);
+
+        if (strcmp(line, separator) == 0) {
+          break;
+        } else if (n == -1) {
+          printf("No separator line in input. Failed to parse.\n");
+          exit(1);
+        }
+
         char *line_copy = (char *) malloc(sizeof(char) * (n + 1));
         strcpy(line_copy, line);
         ll_insert(lines, line_copy);
@@ -105,7 +115,11 @@ int main(int argc, char **argv) {
             printf("%i ", samples[s]->array[i]);
         }
 
-        printf("%i\n", samples[s]->array[l - 1]);
+        if (l == 0) {
+          printf("\n");
+        } else {
+          printf("%i\n", samples[s]->array[l - 1]);
+        }
         sparse_arr_free(samples[s]);
     }
 
@@ -114,7 +128,7 @@ int main(int argc, char **argv) {
         for (int j = 0; j < K; j++) {
             printf("%d ", moments[i * K + j]);
         }
-        printf("\n");
+        printf(" (%.2f)\n", coefficients[i]);
     }
 
     for (int i = 0; i < N; i++) {

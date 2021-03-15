@@ -59,7 +59,7 @@ void seed_rand() {
 }
 
 double rand_double() {
-    uint64_t r53 = (((uint64_t) rand()) << 20) ^((uint64_t) rand());
+    uint64_t r53 = (((uint64_t) rand()) << 20) ^ ((uint64_t) rand());
     return (double) r53 / 2251799813685247.0;
 }
 
@@ -121,7 +121,7 @@ sparse_arr *bv_to_sparse(BV *bv) {
         }
     }
 
-    int *array = (int *) malloc(sizeof(size_t) * l);
+    int *array = (int *) malloc(sizeof(int) * l);
     size_t k = 0;
 
     for (int i = 0; i < bv->n; i++) {
