@@ -20,7 +20,7 @@ int *parse_moments(size_t *P, size_t* K) {
         if (strcmp(line, separator) == 0) {
           break;
         } else if (n == -1) {
-          printf("No separator line in input. Failed to parse.\n");
+          fprintf(stderr, "No separator line in input. Failed to parse.\n");
           exit(1);
         }
 
@@ -83,6 +83,29 @@ double *parse_coefficients(int P) {
     return coefficients;
 }
 
+void verify_dist(distribution *dist) {
+  // check that moments are sorted, which is assumed by sampling code
+  for (int i = 0; i < dist->P; i++) {
+    int last_index = -1;
+    bool hit_end = false;
+    for (int j = 0; j < dist->K; j++) {
+      int index = dist->moments[i * dist->K + j];
+      
+      if (index == -1) {
+        hit_end = true;
+      } else if (hit_end && index != -1) {
+        fprintf(stderr, "Failed to parse moments.\n");
+        exit(1);
+      } else if (index <= last_index) {
+        fprintf(stderr, "Indices in a moment were not sorted.\n");
+        exit(1);
+      }
+
+      last_index = index;
+    }
+  }
+}
+
 int main(int argc, char **argv) {
     size_t N;
     size_t number_of_samples;
@@ -106,6 +129,8 @@ int main(int argc, char **argv) {
             .moments = moments,
             .coefficients = coefficients
     };
+
+    verify_dist(&dist);
 
     sparse_arr **samples = sample(&dist, number_of_samples, sample_interval, burn_in);
 
