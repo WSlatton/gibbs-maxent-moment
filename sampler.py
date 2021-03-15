@@ -1,4 +1,3 @@
-from BitVector import BitVector
 import random
 import numpy as np
 import numpy.random as npr
@@ -6,7 +5,7 @@ from multiprocessing import Pool
 import subprocess as sp
 import os.path as path
 
-path_to_executable = './gibbs_sampler_maxent'
+path_to_executable = './bin/mac/gibbs_maxent_moment'
 
 class Sampler:
     def __init__(self, N, moments, burn_in=10, sample_interval=10, processes=6):
@@ -43,9 +42,9 @@ class Sampler:
         We can then create the corresponding Sampler object with
         > sampler = Sampler(3, {
             (0, 1): 0.2,
-            (0): -0.7,
+            (0,): -0.7,
             (0, 2): 0.5,
-            (2): -0.4
+            (2,): -0.4
         })
         and then draw 100 samples from it with
         > samples = sampler.sample_multiple(100)
@@ -77,14 +76,12 @@ class Sampler:
         """Return specified number of samples as a list of numpy arrays."""
         parameters = "\n".join([
             " ".join(map(str, m)) for m in self.moments
-        ]) + "\n\n" + "\n".join([
+        ]) + "\n%%\n" + "\n".join([
             str(c) for c in self.coefficients
         ])
         root = path.dirname(path.dirname(path.realpath(__file__)))
         number_of_samples_per_process = (self.processes - 1) * [number_of_samples // self.processes]
         number_of_samples_per_process.append(number_of_samples - sum(number_of_samples_per_process))
-
-        open('in', 'w+').write(parameters)
 
         ps = [
             sp.Popen([
