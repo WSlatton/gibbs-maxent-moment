@@ -59,8 +59,12 @@ class Sampler:
         """
         self.N = N
 
-        # filter out empty moment
-        moments = dict([(moment, coefficient) for moment, coefficient in moments.items() if len(moment) > 0])
+        # filter out empty moment and sort moments
+        moments = dict([
+            (tuple(sorted(moment)), coefficient)
+            for moment, coefficient in moments.items()
+            if len(moment) > 0
+        ])
 
         self.moments = list(moments.keys())
         self.coefficients = np.array(list(moments.values()))
@@ -90,7 +94,7 @@ class Sampler:
                 str(ns),
                 str(self.sample_interval),
                 str(self.burn_in)
-            ], stdin=sp.PIPE, stdout=sp.PIPE)
+            ], stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
             for ns in number_of_samples_per_process
         ]
 
@@ -100,7 +104,11 @@ class Sampler:
         samples_strings = []
 
         for p in ps:
-            output, _ = p.communicate()
+            output, err = p.communicate()
+
+            if len(err) > 0:
+                raise Exception(f'Error in sampler executable: {err.decode("utf8")}')
+                
             samples_strings += output.decode("utf8").split("\n")[:-1]
 
         samples = [
