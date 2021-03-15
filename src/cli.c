@@ -51,7 +51,7 @@ int *parse_moments(size_t *P, size_t* K) {
     for (size_t j = 0; j < *P; j++) {
         char *line = ll_next(lines);
         char *p = strtok(line, d);
-        size_t i = 0;
+        int i = 0;
         size_t k = 0;
 
         while (p != NULL) {
@@ -92,7 +92,7 @@ void verify_dist(distribution *dist) {
       int index = dist->moments[i * dist->K + j];
 
       if (index < -2 || index >= (int) dist->N) {
-        fprintf(stderr, "Invalid index %i when N = %i\n", index, dist->N);
+        fprintf(stderr, "Invalid index %i when N = %zu\n", index, dist->N);
         exit(1);
       }
       
